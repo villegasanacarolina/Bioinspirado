@@ -1,0 +1,8 @@
+Montaje físico | entrenamiento: 24 personas | prueba: 34 personas
+M0-físico                          personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  51.7% (p=0.564)  sens  72.2  espec  31.2  AUC 0.438 | ['F3', 'Fz', 'F4', 'T3', 'C3', 'Cz', 'C4', 'T4', 'T5', 'P3', 'Pz', 'P4', 'T6', 'O1', 'O2']
+M4-físico                          personas bien 15/34  exactitud  44.1% (IC95% 27.2-62.1)  balanceada  43.8% (p=0.855)  sens  50.0  espec  37.5  AUC 0.396 | ['F4', 'T3', 'Cz', 'O2']
+
+H4: físico no inferior a ICA (margen -10 puntos de exactitud balanceada)
+  M0: físico 51.7% vs ICA 50.0% | diferencia +1.7 (IC90% -10.4 a +14.3) | p=0.075, Holm 0.150 -> no se demuestra no inferioridad
+  M4: físico 43.8% vs ICA 50.0% | diferencia -6.2 (IC90% -20.5 a +8.3) | p=0.309, Holm 0.309 -> no se demuestra no inferioridad
+-> results/prueba_externa_fisico.json

@@ -1,0 +1,40 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage{fontspec}\setmainfont{TeX Gyre Termes}
+\usepackage[margin=2cm]{geometry}
+\usepackage{booktabs,longtable,array}
+\setlength{\parindent}{0pt}
+\begin{document}
+{\large\bfseries Reporting checklist (topics of the TRIPOD+AI statement)}\par\smallskip
+Manuscript: ``High internal accuracy, chance-level external performance: a preregistered external validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment''. The table maps the main reporting topics of TRIPOD+AI (Collins et al., BMJ 2024;385:e078378) to the sections of the manuscript.\par\medskip
+\begin{longtable}{@{}p{4.2cm}p{8.2cm}p{3.6cm}@{}}
+\toprule
+Topic & What is reported & Where \\
+\midrule\endhead
+Title & Identifies the study as external validation of diagnostic prediction methods & Title \\
+Abstract & Structured summary: background, methods, results with CIs, conclusions & Abstract \\
+Background and objectives & Clinical context, prior study, known pitfalls, aims and hypotheses & Introduction \\
+Source of data & Two public datasets, centre, equipment, roles (development, test) & 2.1, Table 1 \\
+Participants & Eligibility as described by the source; inclusion and exclusion; numbers per group & 2.1, Table 1 \\
+Outcome & Diagnosis (MCI vs control) from the datasets' label files & 2.1, 2.5 \\
+Predictors & EEG features for each method; preprocessing; montages & 2.2, 2.4, Table 2 \\
+Sample size & Fixed by available data; simulated power and chance threshold & 2.5 \\
+Missing data & None; checked before the test & 2.1, Preregistration \\
+Analytical methods & Models, hyperparameters, selection procedures, seeds, validation & 2.2--2.5, Table 2 \\
+Performance measures & Balanced accuracy, sensitivity, specificity, accuracy with exact CI, AUC & 2.5, Table 3 \\
+Model updating & None; post hoc per-dataset standardisation reported separately & 3.4 \\
+Class imbalance & Balanced accuracy as primary outcome; stratified bootstrap & 2.5 \\
+Fairness & No demographic data available; stated as a limitation & Discussion \\
+Development vs evaluation data & Development on EEG\_1 only; single locked test on EEG\_2; dataset-shift control & 2.5, 3.3 \\
+Preregistration and protocol & OSF registration with code and data fingerprints & 2.5, Preregistration \\
+Participants' flow & 27 $\rightarrow$ 24 (EEG\_1); 34 $\rightarrow$ 34 (EEG\_2) & Table 1 \\
+Model specification & Electrodes selected by each method & 3.2, Fig. 6 \\
+Model performance & All methods, all seeds, CIs, regardless of outcome & 3.2, Table 3, Figs. 3--4 \\
+Interpretation & In light of power, dataset shift and confounders & Discussion \\
+Limitations & Sample size, unverified criteria for EEG\_2, assumptions, post hoc analyses & Discussion \\
+Usability & Not recommended for clinical use; protocol for future studies & Discussion, Conclusions \\
+Data and code availability & Public datasets; code, outputs and preregistration available & Back matter \\
+Ethics & Secondary analysis of public de-identified data & Back matter \\
+Funding and conflicts & None declared & Back matter \\
+\bottomrule
+\end{longtable}
+\end{document}

@@ -1,0 +1,12 @@
+inicio 2026-10-22T18:29:36Z
+registro: https://osf.io/4enh8 (enviado 2026-10-22, Pending approval)
+código: huellas OK
+5a4cee0f3558edd97ff696ef9ce82700a47eb593703bf04488d0e8550d16f228  externo/EEG_1.npz
+f19a619264d0785fbcedf093efe34ffadc7f7dd3f4693f063b4db2df99a31e0c  externo/EEG_1_fisico.npz
+cc9236c74d3797e5c10ad7d0b511951495460435e993f2d801ccb9f3b1a5a7d5  externo/EEG_2.npz
+1d829b7a383ac4e74feacf409b2cc66ea850a14cfc40c68892c2c882bff18066  externo/EEG_2_fisico.npz
+externo exit 0
+externo fin 2026-10-22T18:51:03Z
+fisico exit 0
+analisis exit 0
+fin 2026-10-22T18:51:46Z

@@ -1,0 +1,88 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Alta exactitud interna, desempeño externo al nivel del azar</title><style>
+@font-face { font-family: H; src: url('file:///usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreheros-regular.otf'); }
+@font-face { font-family: H; font-weight: bold; src: url('file:///usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreheros-bold.otf'); }
+@font-face { font-family: HC; font-weight: bold; src: url('file:///usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreheroscn-bold.otf'); }
+@page { size: 841mm 1189mm; margin: 0; }
+:root { --ink:#0b0b0b; --ink2:#52514e; --blue:#2a78d6; --blue-soft:#eef4fc; --orange:#eb6834; --orange-soft:#fdf0ea; --rule:#d9d8d3; --bg:#ffffff; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 841mm; height: 1189mm; background: var(--bg); color: var(--ink); font-family: H, sans-serif; }
+body { padding: 30mm 32mm 24mm; display: flex; flex-direction: column; gap: 16mm; font-size: 26pt; line-height: 1.38; }
+header { display: grid; grid-template-columns: 1fr 120mm; gap: 20mm; align-items: center; border-left: 7mm solid var(--blue); padding-left: 16mm; }
+h1 { font-family: HC, H, sans-serif; font-size: 96pt; line-height: 1.02; letter-spacing: -0.5pt; }
+.sub { font-size: 37pt; line-height: 1.22; margin-top: 8mm; color: var(--ink); }
+.auth { font-size: 28pt; margin-top: 10mm; font-weight: bold; }
+.aff { font-size: 25pt; color: var(--ink2); margin-top: 2mm; }
+.qr { text-align: center; font-size: 22pt; color: var(--ink2); }
+.qr img { width: 92mm; height: 92mm; display: block; margin: 0 auto 4mm; }
+.hero { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 12mm; }
+.tile { background: var(--blue-soft); border-radius: 6mm; padding: 10mm 12mm; }
+.tile:first-child { background: var(--orange-soft); }
+.tile .n { font-family: HC, H, sans-serif; font-weight: bold; font-size: 92pt; line-height: 1; color: var(--blue); }
+.tile:first-child .n { color: var(--orange); }
+.tile .l { font-size: 25pt; margin-top: 4mm; line-height: 1.3; }
+main { flex: 1; display: grid; grid-template-columns: 1fr 1.18fr 1.12fr; gap: 16mm; }
+.col { display: flex; flex-direction: column; gap: 11mm; }
+section h2 { font-family: HC, H, sans-serif; font-weight: bold; font-size: 40pt; color: var(--blue); border-bottom: 1.2mm solid var(--blue); padding-bottom: 2mm; margin-bottom: 5mm; }
+section p { margin-bottom: 4mm; }
+ul.b { list-style: none; }
+ul.b li { position: relative; padding-left: 9mm; margin-bottom: 4mm; }
+ul.b li::before { content: ""; position: absolute; left: 0; top: 4.2mm; width: 3.6mm; height: 3.6mm; background: var(--blue); border-radius: 50%; }
+.q { font-size: 31pt; line-height: 1.3; background: var(--orange-soft); border-left: 3mm solid var(--orange); padding: 7mm 9mm; }
+.flow { display: flex; flex-direction: column; gap: 0; }
+.step { border: 0.8mm solid var(--rule); border-radius: 4mm; padding: 5mm 8mm; background: #fafaf8; }
+.step b { display: block; font-size: 27pt; }
+.step span { font-size: 22pt; color: var(--ink2); }
+.step.reg { border-color: var(--orange); background: var(--orange-soft); }
+.step.test { border-color: var(--blue); background: var(--blue-soft); }
+.arrow { text-align: center; color: var(--ink2); font-size: 26pt; line-height: 1.1; }
+table.m { width: 100%; border-collapse: collapse; font-size: 22pt; }
+table.m td { padding: 2.6mm 3mm; border-bottom: 0.5mm solid var(--rule); vertical-align: top; }
+table.m td:first-child { font-weight: bold; white-space: nowrap; color: var(--blue); width: 30mm; }
+figure { margin: 2mm 0 3mm; }
+figure img { width: 100%; display: block; }
+figcaption { font-size: 20pt; color: var(--ink2); margin-top: 2mm; line-height: 1.3; }
+table.d { width: 100%; border-collapse: collapse; font-size: 23pt; }
+table.d td { padding: 2.4mm 3mm; border-bottom: 0.5mm solid var(--rule); }
+table.d tr:first-child td { font-weight: bold; color: var(--blue); border-bottom: 0.8mm solid var(--blue); }
+table.d td:first-child { color: var(--ink2); }
+table.h { width: 100%; border-collapse: collapse; font-size: 23pt; }
+table.h td { padding: 3mm; border-bottom: 0.5mm solid var(--rule); vertical-align: middle; }
+table.h td:first-child { font-weight: bold; width: 20mm; }
+.chip { display: inline-block; padding: 1.2mm 4mm; border-radius: 10mm; font-size: 20pt; font-weight: bold; white-space: nowrap; }
+.chip.ok { background: var(--blue); color: white; }
+.chip.tr { background: #ecebe7; color: var(--ink); }
+.chip.no { background: white; color: var(--ink2); border: 0.6mm solid var(--ink2); }
+.note { font-size: 20pt; color: var(--ink2); margin-top: 3mm; }
+.concl li { font-size: 27pt; }
+.rec { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; font-size: 21.5pt; }
+.rec div { padding-left: 10mm; position: relative; }
+.rec div::before { content: "✓"; position: absolute; left: 0; color: var(--blue); font-weight: bold; }
+.lim { font-size: 21pt; color: var(--ink); background: #f5f5f2; padding: 6mm 8mm; border-radius: 4mm; }
+footer { font-size: 17pt; color: var(--ink2); border-top: 0.6mm solid var(--rule); padding-top: 4mm; }
+</style></head><body>
+<header><div><h1>Alta exactitud interna, desempeño externo al nivel del azar</h1><div class="sub">Validación externa preregistrada de la selección de electrodos con NSGA-II para detectar deterioro cognitivo leve (MCI) con EEG</div><div class="auth">Jessica Milagros Cordero Rivera · Ana Carolina Torres Villegas · Salvador Miguel Hinojosa Cervantes</div><div class="aff">Tecnológico de Monterrey, Campus Guadalajara</div></div>
+<div class="qr"><img src="assets/qr_osf.svg">Preregistro en OSF<br><b>osf.io/4enh8</b></div></header>
+<div class="hero"><div class="tile"><div class="n">75.1% → 45.8%</div><div class="l">exactitud interna de la réplica → exactitud balanceada en 34 personas nuevas</div></div><div class="tile"><div class="n">0 de 5</div><div class="l">métodos superaron el azar en la prueba externa preregistrada</div></div><div class="tile"><div class="n">94.4%</div><div class="l">de exactitud para saber de qué base viene una persona solo con su EEG</div></div></div>
+<main>
+ <div class="col">
+  <section><h2>1 · Contexto</h2><ul class="b"><li>El <b>MCI</b> suele preceder a la demencia. El EEG en reposo es barato y portátil; un dispositivo con <b>pocos electrodos</b> facilitaría el tamizaje.</li><li><b>Aljalal et al. (2024, Sci Rep)</b> reportaron hasta <b>95%</b> de exactitud con 5–7 electrodos elegidos por <b>NSGA-II</b>, en 24 personas, con validación LOSO.</li><li>Pero <b>eligieron y evaluaron con las mismas personas</b>, no publicaron código y no hicieron prueba externa.</li></ul></section>
+  <section><h2>2 · Pregunta</h2><p class="q">¿Ese 95% describe cómo funcionaría el método con <b>personas nuevas</b>, o cuánto se ajustó a las 24 que ya tenía?</p></section>
+  <section><h2>Datos (públicos, Isfahan)</h2><table class="d"><tr><td></td><td>EEG_1</td><td>EEG_2</td></tr><tr><td>Uso</td><td>desarrollo</td><td>prueba única</td></tr><tr><td>Personas</td><td>24 (11 MCI)</td><td>34 (18 MCI)</td></tr><tr><td>Equipo</td><td>19 canales, 256 Hz</td><td>igual</td></tr><tr><td>Análisis</td><td>primeros 10 min</td><td>primeros 10 min</td></tr></table></section>
+  <section><h2>3 · Diseño</h2><div class="flow"><div class="step"><b>EEG_1 · 24 personas</b><span>réplica independiente en Python + controles diagnósticos</span></div><div class="arrow">↓</div><div class="step"><b>Congelar 5 métodos</b><span>R (réplica) · M0 · M4 · M1 · M6 + montaje físico</span></div><div class="arrow">↓</div><div class="step reg"><b>Preregistro en OSF</b><span>hipótesis, reglas de decisión, SHA-256 de código y datos</span></div><div class="arrow">↓</div><div class="step test"><b>EEG_2 · 34 personas</b><span>mismo centro y equipo; prueba única, sin ajustes</span></div></div></section>
+  <section><h2>4 · Métodos comparados</h2><table class="m"><tr><td>R</td><td>Réplica del paper: DWT + entropía, 19 canales, NSGA-II, regla de máxima exactitud</td></tr><tr><td>M0</td><td>EEG limpio con ICA, sin Fp1/Fp2/F7/F8, potencia relativa por banda, LDA regularizado</td></tr><tr><td>M4</td><td>Como M0, 1 electrodo por zona (búsqueda exhaustiva de 180 combinaciones)</td></tr><tr><td>M1</td><td>Como M0, NSGA-II con la regla del paper (5 semillas)</td></tr><tr><td>M6</td><td>Como M0, PSO binario que penaliza cada electrodo (5 semillas)</td></tr><tr><td>Físico</td><td>M0 y M4 sin referencia promedio ni ICA: electrodos reales</td></tr></table></section>
+ </div>
+ <div class="col">
+  <section><h2>5 · Desarrollo: de dónde salen las cifras altas</h2><figure><img src="assets/es_p_dev.svg"><figcaption>Misma señal y clasificadores: por persona (azul) frente a segmentos mezclados (gris); rombos: valores del paper.</figcaption></figure><ul class="b"><li><b>Fuga entre segmentos:</b> por persona, 50–57%; mezclando segmentos de una misma persona, 90–99%. El 89.7% del paper coincide con nuestro 89.8% mezclado.</li><li><b>Sesgo de selección:</b> NSGA-II llega a <b>72–79%</b> con etiquetas al azar.</li><li><b>Ojos:</b> Fp1 y F8, de los más elegidos en el paper, tienen 68% y 39% de señal ocular.</li></ul></section>
+  <section><h2>6 · Prueba externa preregistrada</h2><figure><img src="assets/es_p_main.svg"><figcaption>Exactitud balanceada en EEG_2 con IC 95%. Zona azul: lo necesario para superar el azar.</figcaption></figure><p>La réplica tenía 75.1% interno y obtuvo 45.8% en personas nuevas. Los otros cuatro métodos clasificaron a <b>las 34 personas como MCI</b>.</p></section>
+  <section><h2>7 · Hipótesis</h2><table class="h"><tr><td>H1</td><td>La réplica cae fuera de su exactitud interna</td><td><span class="chip ok">Confirmada</span></td></tr><tr><td>H2</td><td>M0 no es inferior a la réplica</td><td><span class="chip tr">Trivial</span></td></tr><tr><td>H3</td><td>M4/M6 no inferiores a M1 con menos electrodos</td><td><span class="chip tr">Trivial / no</span></td></tr><tr><td>H4</td><td>Montaje físico no inferior a ICA</td><td><span class="chip no">No concluyente</span></td></tr></table><p class="note">“Trivial”: se cumple por regla, pero ambos métodos predicen MCI para todos, así que no prueba que funcionen.</p><figure><img src="assets/es_p_diff.svg"><figcaption>Diferencias pareadas con IC 90%. Margen de no inferioridad: −10 puntos (línea naranja).</figcaption></figure></section>
+ </div>
+ <div class="col">
+  <section><h2>8 · ¿Por qué fallaron?</h2><figure><img src="assets/es_p_conf.svg"><figcaption>Cada punto es una persona. Las diferencias entre bases superan a las diferencias entre grupos.</figcaption></figure><ul class="b"><li>Las dos bases son del mismo centro, pero <b>EEG_2 está dominada por delta</b> (69% frente a 40%). Como en EEG_1 el MCI tenía algo más de delta, los modelos mandan a todos a MCI.</li><li>El <b>ruido de la red eléctrica (50 Hz)</b> se asocia con el diagnóstico <b>en sentidos opuestos</b> en cada base: un confusor de adquisición.</li><li>Ni el AUC (0.40–0.52) ni estandarizar cada base por separado revelaron señal.</li></ul></section>
+  <section><h2>9 · Electrodos elegidos</h2><figure><img src="assets/es_p_heads.svg" style="width:82%;margin:0 auto"></figure><p>Estables entre semillas, pero sin valor en personas nuevas: estabilidad no es validez.</p></section>
+  <section class="concl"><h2>10 · Conclusiones</h2><ul class="b"><li>Las exactitudes reportadas <b>no se transfieren</b> a personas nuevas.</li><li>El <b>cambio de dominio</b> y los <b>confusores de adquisición</b> pesan más que la señal del MCI.</li><li>Minimizar electrodos solo tiene sentido <b>después</b> de demostrar que la señal generaliza.</li></ul></section>
+  <section><h2>11 · Protocolo mínimo que proponemos</h2><div class="rec"><div>Evaluar por persona, nunca por segmento</div><div>Selección anidada dentro de la validación</div><div>Comparar contra etiquetas revueltas</div><div>Reportar AUC además de exactitud</div><div>Revisar ojos y ruido de red por grupo</div><div>Reportar el montaje físico</div><div>Probar si las bases se distinguen</div><div>Preregistrar una prueba externa única</div></div></section>
+  <p class="lim"><b>Limitaciones:</b> muestras pequeñas (potencia 0.84 solo si la exactitud real fuera 70%); no se pudo verificar que EEG_2 use criterios idénticos; se probó la mejor configuración de selección de canales del paper, no todas.</p>
+ </div>
+</main>
+<footer>Aljalal M. et al. Sci Rep 14:12483 (2024) · Kashefpoor M. et al. J Med Signals Sens 6:25 (2016); Biomed Signal Process Control 53:101559 (2019) · Varma & Simon, BMC Bioinformatics 7:91 (2006) · Saeb et al., GigaScience 6:gix019 (2017) · Deb et al., IEEE TEC 6:182 (2002)</footer>
+</body></html>

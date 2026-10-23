@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+title: "External validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment"
+version: 1.0.0
+date-released: 2026-10-22
+license: MIT
+authors:
+  - family-names: "Cordero Rivera"
+    given-names: "Jessica Milagros"
+    affiliation: "Tecnológico de Monterrey, Campus Guadalajara"
+  - family-names: "Torres Villegas"
+    given-names: "Ana Carolina"
+    affiliation: "Tecnológico de Monterrey, Campus Guadalajara"
+  - family-names: "Hinojosa Cervantes"
+    given-names: "Salvador Miguel"
+    affiliation: "Tecnológico de Monterrey, Campus Guadalajara"
+keywords: [EEG, mild cognitive impairment, NSGA-II, channel selection, external validation, preregistration, replication]
+references:
+  - type: article
+    title: "Selecting EEG channels and features using multi-objective optimization for accurate MCI detection: validation using leave-one-subject-out strategy"
+    authors:
+      - family-names: Aljalal
+        given-names: Majid
+    journal: "Scientific Reports"
+    volume: 14
+    year: 2024
+    doi: "10.1038/s41598-024-63180-y"

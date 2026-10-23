@@ -1,0 +1,85 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}\setmainlanguage{spanish}
+\gappto\captionsspanish{\renewcommand{\figurename}{Figura}\renewcommand{\tablename}{Tabla}\renewcommand{\refname}{Referencias}\renewcommand{\abstractname}{Resumen}}
+\setmainfont{TeX Gyre Termes}\setsansfont{TeX Gyre Heros}\setmonofont{TeX Gyre Cursor}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,booktabs,enumitem,xcolor,array}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{tikz}\usetikzlibrary{positioning,arrows.meta,fit,calc}
+\usepackage{microtype}
+\usepackage{lineno}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{authblk}
+\renewcommand\Affilfont{\small}\renewcommand\Authand{ y }\renewcommand\Authands{ y }
+\setlength{\parskip}{2pt}
+\linenumbers
+
+\title{\bfseries Alta exactitud interna, desempeño externo al nivel del azar: validación externa preregistrada de la selección de electrodos con NSGA-II para detectar deterioro cognitivo leve con EEG}
+\author[1]{Jessica Milagros Cordero Rivera}
+\author[1,*]{Ana Carolina Torres Villegas}
+\author[1]{Salvador Miguel Hinojosa Cervantes}
+\affil[1]{Tecnológico de Monterrey, Campus Guadalajara, Zapopan, Jalisco, Mexico}
+\affil[*]{Autora de correspondencia: \href{mailto:torresvillegasanacarolina@gmail.com}{torresvillegasanacarolina@gmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Antecedentes.} Un estudio reciente reportó hasta 95\,\% de exactitud para detectar deterioro cognitivo leve (MCI) con EEG en reposo usando 5--7 electrodos elegidos por un algoritmo genético multiobjetivo (NSGA-II), con validación \emph{leave-one-subject-out} en 24 personas. La selección y la evaluación usaron a las mismas personas y no hubo prueba externa.
+\textbf{Métodos.} Reconstruimos el método de forma independiente y usamos la base pública original (EEG\_1) solo para desarrollo, donde cuantificamos la fuga entre segmentos, el sesgo de selección y la contaminación ocular. Congelamos la réplica y cuatro alternativas (potencia relativa por banda limpia con ICA y LDA con contracción: sin selección, con un electrodo por zona, con NSGA-II y con un enjambre de partículas binario penalizado), preregistramos en OSF hipótesis, reglas de decisión y huellas del código, y probamos cada método una sola vez en una base pública independiente del mismo centro y equipo (EEG\_2; 18 MCI, 16 controles). Un análisis secundario usó un montaje físico procesado canal por canal.
+\textbf{Resultados.} En desarrollo, mezclar segmentos de la misma persona elevó la exactitud de 50--57\,\% a 90--99\,\%, y NSGA-II alcanzó 72--79\,\% con etiquetas revueltas. En la prueba externa, la exactitud interna de 75.1\,\% de la réplica cayó a una exactitud balanceada de 45.8\,\% (IC 95\,\% 31.2--60.1), lo que confirmó la primera hipótesis. Ningún método superó el azar ($p_\text{Holm}=1.00$); las cuatro alternativas predijeron MCI para las 34 personas, por lo que su no inferioridad formal fue trivial. Las dos bases se distinguieron en 94.4\,\% solo con las características del EEG: EEG\_2 estaba dominada por actividad delta (69\,\% frente a 40\,\% de la potencia de 1--30\,Hz) y la interferencia de la red eléctrica se asoció con el diagnóstico en sentidos opuestos en cada base. Los AUC externos fueron de 0.40--0.52 y la estandarización por base no reveló señal residual. La comparación con el montaje físico fue no concluyente.
+\textbf{Conclusiones.} Las exactitudes reportadas no se transfirieron a personas nuevas. El cambio de dominio y los confusores de adquisición pesaron más que cualquier señal relacionada con el MCI. La minimización de electrodos debe venir después, no antes, de una validación por persona, anidada y externa preregistrada.\\[4pt]
+\noindent\textbf{Palabras clave:} deterioro cognitivo leve; EEG; selección de canales; NSGA-II; validación externa; preregistro; réplica; cambio de dominio.
+\end{abstract}
+
+\begin{figure}[t]
+\centering\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[every node/.style={font=\scriptsize, align=center},
+  box/.style={draw, rounded corners=2pt, minimum height=13mm, text width=27mm, fill=#1}, box/.default=gray!8,
+  arr/.style={-{Stealth[length=2mm]}, thick}]
+\node[box=blue!8]   (d1)  at (0,0)     {\textbf{EEG\_1}\\24 personas\\(11 MCI, 13 controles)};
+\node[box]          (dev) at (3.6,0)   {\textbf{Desarrollo}\\réplica\\+ controles diagnósticos};
+\node[box]          (frz) at (7.2,0)   {\textbf{Congelar}\\R, M0, M4, M1, M6\\+ montaje físico};
+\node[box=orange!12](reg) at (10.8,0)  {\textbf{Preregistro}\\hipótesis, reglas,\\SHA-256 de código y datos};
+\node[box=blue!8]   (d2)  at (14.4,0)  {\textbf{EEG\_2}\\34 personas\\(18 MCI, 16 controles)};
+\node[box=orange!12, text width=52mm] (tst) at (12.6,-2.4) {\textbf{Prueba externa única}\\ajuste con EEG\_1, predicción de EEG\_2 una vez;\\un script aplica las reglas registradas};
+\draw[arr] (d1) -- (dev); \draw[arr] (dev) -- (frz); \draw[arr] (frz) -- (reg);
+\draw[arr] (reg.south) -- (reg.south |- tst.north); \draw[arr] (d2.south) -- (d2.south |- tst.north);
+\draw[dashed, gray] (12.6,1.0) -- (12.6,-0.9); \node[font=\tiny, text=gray] at (12.6,1.25) {sin acceso antes del registro};
+\end{tikzpicture}}
+\caption{\textbf{Diseño del estudio.} EEG\_1 se usó para todo lo que implica decisiones; EEG\_2 se usó una sola vez, después del preregistro, con código congelado.}
+\label{fig:design}
+\end{figure}
+
+\input{intro_metodos}
+\input{resultados_discusion}
+
+\section*{Preregistro}
+Las hipótesis, las reglas de decisión, el código y las huellas de las características de prueba se registraron en OSF antes de la prueba externa: \url{https://osf.io/4enh8}. Desviaciones: ninguna en el análisis confirmatorio. La estandarización por base de los análisis exploratorios se agregó después de ver los resultados y se marca como \emph{post hoc}.
+
+\section*{Disponibilidad de datos}
+Ambas bases están disponibles públicamente en la Universidad de Ciencias Médicas de Isfahan, en \url{https://misp.mui.ac.ir/en/eeg-data} \citep{kashefpoor2016,kashefpoor2019}. Los archivos de características extraídas pueden regenerarse bit a bit con el código publicado; sus huellas SHA-256 están en el preregistro.
+
+\section*{Disponibilidad del código}
+El código completo (réplica, métodos congelados, montaje físico, reglas de decisión, análisis exploratorios y figuras) está disponible en el registro de OSF y en el repositorio público que acompaña al artículo.
+
+\section*{Declaración ética}
+Este es un análisis secundario de datos públicos y anonimizados. Los estudios originales obtuvieron aprobación ética y consentimiento informado según se reporta en sus publicaciones \citep{kashefpoor2016,kashefpoor2019}.
+
+\section*{Contribuciones de las autoras y el autor}
+\textbf{J.M.C.R.}: conceptualización, metodología, software, investigación, análisis formal, redacción del borrador original. \textbf{A.C.T.V.}: conceptualización, metodología, software, validación, análisis formal, visualización, redacción del borrador original, revisión y edición. \textbf{S.M.H.C.}: supervisión, revisión y edición. Todas las personas autoras aprobaron el manuscrito final.
+
+\section*{Financiamiento}
+Esta investigación no recibió financiamiento específico.
+
+\section*{Conflicto de intereses}
+Las personas autoras declaran no tener conflictos de intereses.
+
+\bibliographystyle{unsrtnat}
+\bibliography{../shared/refs}
+
+\end{document}

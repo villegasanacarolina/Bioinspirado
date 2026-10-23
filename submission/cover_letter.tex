@@ -1,0 +1,39 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{fontspec}\setmainfont{TeX Gyre Termes}
+\usepackage[margin=2.6cm]{geometry}
+\usepackage{xcolor}\usepackage[colorlinks=true,urlcolor=blue!50!black]{hyperref}
+\setlength{\parindent}{0pt}\setlength{\parskip}{8pt}
+\pagestyle{empty}
+\begin{document}
+Tecnológico de Monterrey, Campus Guadalajara\\
+Zapopan, Jalisco, Mexico\\
+\today
+
+The Editors\\
+\textit{PLOS ONE}
+
+Dear Editors,
+
+We submit the manuscript \textbf{``High internal accuracy, chance-level external performance: a preregistered external validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment''} for consideration as a Research Article.
+
+Aljalal et al.\ (2024, \textit{Scientific Reports} 14:12483) reported up to 95\% accuracy in detecting mild cognitive impairment from resting-state EEG with 5--7 electrodes chosen by a multi-objective genetic algorithm. These figures have attracted interest because a reliable screening test with few electrodes would be inexpensive and portable. The method was evaluated on the same 24 people used to select the electrodes, and no external test has been reported.
+
+Our study is an independent replication followed by a single, preregistered external test (\url{https://osf.io/4enh8}). We used the original public dataset only for development, where we measured three sources of optimism: segments of the same person in training and test folds, selection bias from evaluating thousands of electrode subsets on the same people, and ocular contamination of the frontal electrodes. We then froze the replication and four alternatives designed to avoid these problems, registered hypotheses, decision rules and SHA-256 fingerprints of the code and test features, and tested every method once on an independent public dataset from the same centre and equipment.
+
+The main findings are:
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item The replication's internal accuracy of 75\% fell to a balanced accuracy of 46\% in 34 new people; no method performed above chance.
+\item The two datasets, although recorded at the same centre with the same system, were 94\% distinguishable from their EEG features alone, and mains interference was associated with the diagnosis in opposite directions in each dataset.
+\item Cleaner and more parsimonious alternatives produced honest internal estimates but did not create a transferable signal.
+\end{itemize}
+
+We believe the manuscript fits \textit{PLOS ONE} because it reports a methodologically rigorous replication with a preregistered analysis plan and transparent negative results, together with practical recommendations for studies that select EEG electrodes for diagnosis. All data are public, and all code, the preregistration and the analysis outputs are openly available.
+
+The manuscript has not been published and is not under consideration elsewhere. All authors have approved the submission and declare no competing interests.
+
+Sincerely,
+
+Ana Carolina Torres Villegas (corresponding author), on behalf of all authors\\
+Jessica Milagros Cordero Rivera, Ana Carolina Torres Villegas, Salvador Miguel Hinojosa Cervantes\\
+\href{mailto:torresvillegasanacarolina@gmail.com}{torresvillegasanacarolina@gmail.com}
+\end{document}

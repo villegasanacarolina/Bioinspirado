@@ -1,0 +1,296 @@
+{
+ "n": 34,
+ "n_mci": 18,
+ "metodos": {
+  "R": {
+   "metodo": "R",
+   "electrodos_mediana": 5.0,
+   "balanceada": 45.83333333333333,
+   "ic95": [
+    31.25,
+    60.06944444444444
+   ],
+   "p": 0.8500149985001499,
+   "p_holm": 1.0,
+   "sens": 16.666666666666664,
+   "espec": 75.0,
+   "bien": 15
+  },
+  "M0": {
+   "metodo": "M0",
+   "electrodos_mediana": 15.0,
+   "balanceada": 50.0,
+   "ic95": [
+    50.0,
+    50.0
+   ],
+   "p": 1.0,
+   "p_holm": 1.0,
+   "sens": 100.0,
+   "espec": 0.0,
+   "bien": 18
+  },
+  "M4": {
+   "metodo": "M4",
+   "electrodos_mediana": 4.0,
+   "balanceada": 50.0,
+   "ic95": [
+    50.0,
+    50.0
+   ],
+   "p": 1.0,
+   "p_holm": 1.0,
+   "sens": 100.0,
+   "espec": 0.0,
+   "bien": 18
+  },
+  "M1": {
+   "metodo": "M1",
+   "electrodos_mediana": 5.0,
+   "balanceada": 50.0,
+   "ic95": [
+    50.0,
+    50.0
+   ],
+   "p": 1.0,
+   "p_holm": 1.0,
+   "sens": 100.0,
+   "espec": 0.0,
+   "bien": 18
+  },
+  "M6": {
+   "metodo": "M6",
+   "electrodos_mediana": 5.0,
+   "balanceada": 50.0,
+   "ic95": [
+    50.0,
+    50.0
+   ],
+   "p": 1.0,
+   "p_holm": 1.0,
+   "sens": 100.0,
+   "espec": 0.0,
+   "bien": 18
+  },
+  "M0-fis": {
+   "balanceada": 51.736111111111114,
+   "auc": 0.4375,
+   "auc_ica": 0.5208333333333333,
+   "electrodos": [
+    "F3",
+    "Fz",
+    "F4",
+    "T3",
+    "C3",
+    "Cz",
+    "C4",
+    "T4",
+    "T5",
+    "P3",
+    "Pz",
+    "P4",
+    "T6",
+    "O1",
+    "O2"
+   ],
+   "electrodos_ica": [
+    "F3",
+    "Fz",
+    "F4",
+    "T3",
+    "C3",
+    "Cz",
+    "C4",
+    "T4",
+    "T5",
+    "P3",
+    "Pz",
+    "P4",
+    "T6",
+    "O1",
+    "O2"
+   ]
+  },
+  "M4-fis": {
+   "balanceada": 43.75,
+   "auc": 0.39583333333333337,
+   "auc_ica": 0.4687499999999999,
+   "electrodos": [
+    "F4",
+    "T3",
+    "Cz",
+    "O2"
+   ],
+   "electrodos_ica": [
+    "F4",
+    "T3",
+    "C3",
+    "O1"
+   ]
+  }
+ },
+ "dif": {
+  "M0-R": {
+   "dif": 4.166666666666671,
+   "lo90": -7.638888888888886,
+   "hi90": 15.972222222222221
+  },
+  "M4-M1": {
+   "dif": 0.0,
+   "lo90": 0.0,
+   "hi90": 0.0
+  },
+  "M6-M1": {
+   "dif": 0.0,
+   "lo90": 0.0,
+   "hi90": 0.0
+  },
+  "M0fis-M0": {
+   "dif": 1.7361111111111143,
+   "lo90": -10.416666666666671,
+   "hi90": 14.253472222221973,
+   "p_holm": 0.14958504149585042
+  },
+  "M4fis-M4": {
+   "dif": -6.25,
+   "lo90": -20.48611111111111,
+   "hi90": 8.333333333333329,
+   "p_holm": 0.3094690530946905
+  }
+ },
+ "semillas": [
+  {
+   "metodo": "R  r\u00e9plica del paper",
+   "balanceada": 45.83333333333333,
+   "p": 0.8500149985001499,
+   "extra": "CA interna 75.1% | CA por segmento en prueba 45.6% | ['T3', 'Cz', 'T4', 'Pz', 'P4']"
+  },
+  {
+   "metodo": "M0 sin selecci\u00f3n (15 electrodos)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": ""
+  },
+  {
+   "metodo": "M4 zonas exhaustivo",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T3', 'C3', 'O1']"
+  },
+  {
+   "metodo": "M1 NSGA-II regla del paper (semilla 0)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'T5', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M1 NSGA-II regla del paper (semilla 1)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'T5', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M1 NSGA-II regla del paper (semilla 2)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'T5', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M1 NSGA-II regla del paper (semilla 3)",
+   "balanceada": 47.22222222222222,
+   "p": 1.0,
+   "extra": "['F4', 'C3', 'Cz', 'T5']"
+  },
+  {
+   "metodo": "M1 NSGA-II regla del paper (semilla 4)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'T5', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M6 PSO binario parsimonioso (semilla 0)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['Fz', 'F4', 'T4', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M6 PSO binario parsimonioso (semilla 1)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F3', 'C3', 'T4', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M6 PSO binario parsimonioso (semilla 2)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'C3', 'T4', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M6 PSO binario parsimonioso (semilla 3)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'T5', 'Pz', 'T6']"
+  },
+  {
+   "metodo": "M6 PSO binario parsimonioso (semilla 4)",
+   "balanceada": 50.0,
+   "p": 1.0,
+   "extra": "['F4', 'T4', 'P4', 'T6']"
+  }
+ ],
+ "hipotesis": {
+  "H1": {
+   "ca_interna": 75.1,
+   "balanceada_externa": 45.83333333333333,
+   "ic95_alto": 60.06944444444444,
+   "confirmada": true
+  },
+  "H2": {
+   "diferencia": 4.166666666666671,
+   "ic90_bajo": -7.638888888888886,
+   "p": 0.026497350264973504,
+   "confirmada": true
+  },
+  "H3": {
+   "M4": {
+    "diferencia": 0.0,
+    "ic90_bajo": 0.0,
+    "p": 9.999000099990002e-05,
+    "p_holm": 0.00019998000199980003,
+    "menos_electrodos": true,
+    "confirmada": true
+   },
+   "M6": {
+    "diferencia": 0.0,
+    "ic90_bajo": 0.0,
+    "p": 9.999000099990002e-05,
+    "p_holm": 0.00019998000199980003,
+    "menos_electrodos": false,
+    "confirmada": false
+   }
+  },
+  "H4": {
+   "M0": {
+    "diferencia": 1.7361111111111143,
+    "ic90_bajo": -10.416666666666671,
+    "p_holm": 0.14958504149585042,
+    "confirmada": false
+   },
+   "M4": {
+    "diferencia": -6.25,
+    "ic90_bajo": -20.48611111111111,
+    "p_holm": 0.3094690530946905,
+    "confirmada": false
+   }
+  }
+ },
+ "efecto_base": 94.36274509803921,
+ "R_ca_interna": 75.1,
+ "R_canales": [
+  "T3",
+  "Cz",
+  "T4",
+  "Pz",
+  "P4"
+ ]
+}

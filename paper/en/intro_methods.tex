@@ -1,0 +1,94 @@
+\section{Introduction}
+
+Mild cognitive impairment (MCI) is a decline in cognition beyond what is expected for age that does not yet compromise independence, and it is a frequent precursor of dementia \citep{petersen2004}. Resting-state electroencephalography (EEG) is attractive for screening because it is inexpensive, non-invasive and portable, and because MCI and Alzheimer's disease are associated with a slowing of the resting rhythms, in particular a reduction of posterior alpha power \citep{babiloni2015,cassani2018}. A screening device would be more practical with few electrodes, so several studies search for the smallest montage that preserves diagnostic accuracy.
+
+\citet{aljalal2024} addressed this question with a multi-objective genetic algorithm (NSGA-II; \citealp{deb2002}) that searched for the electrodes and features that maximise leave-one-subject-out (LOSO) accuracy while minimising the number of electrodes. Using a public dataset of 24 people from Isfahan \citep{kashefpoor2016}, they reported 89.7\% accuracy with all 19 electrodes, up to 94.9\% with 7 electrodes, and up to 95.8\% when features were also selected. The electrodes chosen most often were Cz, F8, T4 and Fp1. The code was not released.
+
+Three well-documented pitfalls can inflate such figures. First, when segments of the same person appear in both training and test sets, a classifier can recognise the person instead of the condition \citep{saeb2017}. Second, when the same cross-validation estimate is used both to choose a model (here, the electrode subset) and to report its performance, the reported value is optimistically biased, and the bias grows with the number of candidate models \citep{varma2006,cawley2010}. NSGA-II evaluates thousands of subsets, so this selection bias can be large. Third, with a few dozen people the sampling error of any accuracy estimate is wide, about $\pm 15$ percentage points \citep{varoquaux2018}, so apparent improvements are easily produced by chance. A fourth, domain-specific issue concerns the frontal electrodes: Fp1, Fp2, F7 and F8 record eye movements, which can differ between groups and act as a confounder. Finally, electrodes selected after an average reference and an independent component analysis (ICA) computed from all 19 channels are \emph{virtual}: their signal contains information from the other electrodes, and a device with only those electrodes could not reproduce it.
+
+The only way to know whether a selected montage generalises is to test it once on people who were never used to build or select it \citep{collins2024}. We therefore (i) reconstructed the method of \citet{aljalal2024} independently in Python; (ii) used the original dataset (EEG\_1) only for development, where we quantified the pitfalls above with diagnostic controls; (iii) froze the replication and four alternatives designed to address them; (iv) preregistered hypotheses, decision rules and code fingerprints \citep{nosek2018,osfprereg}; and (v) ran a single external test on an independent public dataset from the same centre and equipment (EEG\_2; \citealp{kashefpoor2019}). A secondary, preregistered analysis asked whether the conclusions hold with a physical montage, in which each electrode is processed on its own.
+
+\section{Materials and methods}
+
+\subsection{Datasets}
+
+Both datasets are public resting-state EEG recordings from Isfahan University of Medical Sciences, acquired with the same system (19 electrodes of the 10--20 system, 256\,Hz, about 30 minutes per recording) and distributed by the same group \citep{kashefpoor2016,kashefpoor2019}. Table~\ref{tab:data} summarises them. According to the source, MCI was diagnosed with a neuropsychiatric interview based on Petersen's criteria, with Mini-Mental State Examination (MMSE) scores of 21--26 for MCI and above 26 for controls; participants were 60--77 years old and had undergone coronary angiography in the previous year. EEG\_2 was released as an extension of the same dataset; we could not verify that its inclusion criteria are identical. The original studies obtained ethical approval and informed consent as reported in their publications; the present work is a secondary analysis of de-identified public data.
+
+\begin{table}[t]
+\centering\small
+\caption{\textbf{Datasets.} Both come from the same centre and recording system. Labels were read from each dataset's \texttt{states.xlsx} file.}
+\label{tab:data}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & EEG\_1 (development) & EEG\_2 (external test) \\
+\midrule
+People available & 27 (11 MCI, 16 controls) & 34 (18 MCI, 16 controls) \\
+People used & 24 (11 MCI, 13 controls)\textsuperscript{a} & 34 (no exclusion) \\
+Recording length & about 30 min & 27.3--37.9 min \\
+Segments per person & 60 $\times$ 10\,s (first 10 min) & 60 $\times$ 10\,s (first 10 min) \\
+Role & development and selection only & single locked test \\
+Reference & \citet{kashefpoor2016} & \citet{kashefpoor2019} \\
+\bottomrule
+\end{tabular}
+
+\smallskip\footnotesize\raggedright \textsuperscript{a}\,\citet{aljalal2024} excluded three controls without naming them; we excluded the three controls with the most 10-s segments above 100\,\textmu V (HC\_12, HC\_17, HC\_24). An analysis with all 27 people is reported as exploratory.
+\end{table}
+
+Before the external test we checked that no EEG\_2 recording duplicates an EEG\_1 recording: no file is identical (MD5), and the maximum correlation between any 30-s fragment of an EEG\_2 recording and any EEG\_1 recording was 0.74, against 1.00 for a true copy. All 34 EEG\_2 recordings contain the 19 channels at 256\,Hz and exceed 10 minutes.
+
+\subsection{Independent replication of the original method}
+
+We rebuilt the pipeline of \citet{aljalal2024} from its Methods section (Fig.~\ref{fig:design}). The first 10 minutes of each recording were band-pass filtered (0.5--64\,Hz), re-referenced to the common average, notch-filtered at 50 and 100\,Hz, and split into 60 segments of 10\,s. Each segment was decomposed with a five-level discrete wavelet transform (Daubechies-4, detail D1 discarded; \citealp{mallat1989}) or with variational mode decomposition, and ten measures were computed per sub-band and channel (among them threshold entropy, ThEn, and Teager energy, TeEng). Four classifiers (\emph{k}-nearest neighbours, support vector machine, discriminant analysis and random forest) were evaluated with LOSO, averaging the per-subject segment accuracy as in the original paper. NSGA-II used a binary chromosome over the 19 channels plus integer genes for the classifier's hyperparameters, with the two objectives of the paper: fewer channels and higher LOSO accuracy. Population and generations were 200 and 50 for channel selection. Choices that the original paper does not specify (wavelet family, ThEn threshold of 2\,\textmu V, genetic operators, z-scoring within folds, which controls to exclude) are documented in the code. Running the replication on two different computers produced identical results in all 80 measure--decomposition--classifier combinations.
+
+\subsection{Diagnostic controls on the development data}
+
+On EEG\_1 only, we quantified the pitfalls described in the Introduction: (i) record-wise 10-fold cross-validation, which mixes segments of the same person, versus person-wise LOSO; (ii) NSGA-II run with shuffled diagnostic labels, which shows the accuracy that the search reaches without any real signal \citep{ojala2010}; (iii) nested LOSO, in which NSGA-II selects electrodes on 23 people and the selected model is tested on the 24th, repeated 24 times \citep{varma2006}; and (iv) the ocular content of each electrode, estimated as the share of its variance explained by the ICA components most correlated with vertical and horizontal electro-oculograms derived from the frontal channels \citep{jung2000}.
+
+\subsection{Methods compared in the external test}
+
+Five methods were frozen in code before the preregistration (Table~\ref{tab:methods}). R is the replication of \citet{aljalal2024} in its best-reported channel-selection configuration (DWT, ThEn, discriminant analysis), with the paper's rule of keeping the solution with the highest internal accuracy. M0, M4, M1 and M6 share a cleaner representation designed to address the pitfalls: (a) ICA removal of the two components most correlated with vertical and horizontal eye movements, exclusion of Fp1, Fp2, F7 and F8 and recomputation of the average reference; (b) features that the MCI literature associates with the condition, namely the log relative power in the delta (1--4\,Hz), theta (4--8\,Hz), alpha (8--13\,Hz) and beta (13--30\,Hz) bands, computed with Welch's method \citep{welch1967} on each 10-s segment and averaged per person, so that the unit of analysis is the person and not the segment; and (c) a regularised classifier, linear discriminant analysis with Ledoit--Wolf shrinkage \citep{ledoit2004}. M0 uses the 15 remaining electrodes without selection. M4 restricts the search to one electrode per scalp zone (frontal, central, temporal, parieto-occipital; 180 combinations evaluated exhaustively), a much smaller search space that leaves fewer opportunities to fit noise. M1 applies NSGA-II with the paper's rule to the same features. M6 uses binary particle swarm optimisation \citep{kennedy1997} with an explicit penalty of one percentage point per electrode, to check that conclusions do not depend on the search algorithm \citep{wolpert1997}. For M1 and M6 the prediction for each person is the majority vote of five seeds. All selection inside M4, M1 and M6 uses an inner leave-one-out on the training people.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{\textbf{Methods frozen before the external test.} All are fitted, and select their electrodes, on EEG\_1 only. LDA: linear discriminant analysis; LOO: leave-one-out.}
+\label{tab:methods}
+\begin{tabular}{@{}p{1.7cm}p{3.6cm}p{3.1cm}p{5.4cm}@{}}
+\toprule
+Method & Signal & Features & Electrode selection and decision \\
+\midrule
+R & 19 channels, average reference & DWT ThEn per segment & NSGA-II (200$\times$50, seed 0), highest internal LOSO accuracy; person label = majority of segments \\
+M0 & ICA-cleaned, 15 channels\textsuperscript{a} & Log relative band power, person mean & None (15 electrodes); shrinkage LDA \\
+M4 & As M0 & As M0 & One electrode per zone, exhaustive search (180), inner LOO balanced accuracy \\
+M1 & As M0 & As M0 & NSGA-II (40$\times$25) with the paper's rule; majority vote of 5 seeds \\
+M6 & As M0 & As M0 & Binary PSO (20 particles, 25 iterations), fitness = inner balanced accuracy $-$ 1 point per electrode; vote of 5 seeds \\
+M0-phys., M4-phys. & 15 channels, per-channel filtering only (no average reference, no ICA) & As M0 & As M0 and M4 \\
+\bottomrule
+\end{tabular}
+
+\smallskip\raggedright \textsuperscript{a}\,Fp1, Fp2, F7 and F8 removed after ICA; average reference recomputed.
+\end{table}
+
+\paragraph{Physical montage.} In M0 and M4, each electrode's features are computed after an average reference and an ICA estimated from all 19 channels. To test whether the electrode savings hold with real electrodes, M0-physical and M4-physical repeat M0 and M4 with only single-channel operations (band-pass and notch filtering), keeping the original recording reference. This analysis was added after the main methods were frozen and was preregistered as secondary.
+
+\subsection{Preregistration and external test}
+
+Hypotheses, decision rules, the code (SHA-256 fingerprints of every file) and the extracted EEG\_2 feature files (also fixed by SHA-256; extraction is deterministic and reproduces them bit for bit) were registered on OSF before any model was trained or evaluated on EEG\_2 \citep{osfprereg}. The external test was then run once: every method was fitted on EEG\_1 and predicted each EEG\_2 person, and a script applied the preregistered decision rules to the saved predictions.
+
+The primary outcome was the person-level balanced accuracy on the 34 EEG\_2 people, i.e., the mean of sensitivity and specificity. The research question (RQ) asked which methods perform above chance; each method's predictions were held fixed and the test labels permuted 10\,000 times, with Holm correction across the five methods \citep{holm1979}. Four hypotheses were registered:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \textbf{H1.} R shows high internal accuracy but much lower external accuracy. Supported if R's internal LOSO accuracy (the figure the original paper would report) lies above the upper limit of the 95\% bootstrap confidence interval (CI) of its external balanced accuracy.
+\item \textbf{H2.} M0 is not inferior to R.
+\item \textbf{H3.} M4 and M6 are not inferior to M1 and use fewer electrodes (median over seeds).
+\item \textbf{H4 (secondary).} M0-physical is not inferior to M0 with ICA. Because M4-physical fell to 36.7\% in development (Section~\ref{sec:dev}), no prediction was made for it.
+\end{itemize}
+Non-inferiority \citep{walker2011} used a margin of $-10$ percentage points of balanced accuracy, the smallest loss we considered relevant for screening and about the size of the gain that artefact cleaning gave in development. It was assessed with a paired bootstrap of people stratified by class (10\,000 resamples; \citealp{efron1993}); non-inferiority was concluded if fewer than 5\% of resampled differences were at or below $-10$, i.e., if the lower limit of the two-sided 90\% CI was above $-10$. Holm correction was applied across the two comparisons of H3 and, separately, of H4. Exact Clopper--Pearson intervals \citep{clopper1934} are reported for raw accuracy. With 18 MCI and 16 controls, a method needs at least 62\% balanced accuracy to beat chance; the power to detect true balanced accuracies of 60, 70 and 80\% is 0.40, 0.84 and 0.99 (simulation). A CI containing both $-10$ and 0 is reported as inconclusive.
+
+As a descriptive control for domain shift, a shrinkage LDA with leave-one-out tried to tell from the 15-electrode features alone which dataset each of the 58 people came from (\emph{dataset effect}).
+
+\subsection{Exploratory analyses}
+
+The following analyses were declared as exploratory in the preregistration: (i) the external test of M0 and M4 trained on all 27 people of EEG\_1; (ii) the area under the ROC curve (AUC), estimated with leave-pair-out in EEG\_1 \citep{airola2011} and externally for the methods with a continuous score; (iii) mains interference, measured as the log ratio of power at 49--51\,Hz to power at 1--45\,Hz in the raw recordings, and slow frontal activity (0.5--4\,Hz power at Fp1, Fp2, F7 and F8), both compared between groups and datasets; (iv) a positive control, the direction of the group difference in posterior alpha relative power (P3, Pz, P4, O1, O2), which is expected to be lower in MCI \citep{babiloni2015}; and (v) the stability of the electrodes selected by M1 and M6 across seeds.
+
+\subsection{Software and reproducibility}
+
+All analyses were run in Python with MNE-Python \citep{gramfort2013}, scikit-learn \citep{pedregosa2011}, NumPy and SciPy. NSGA-II and binary PSO were implemented from their original descriptions. All stochastic steps use fixed seeds. The code, the preregistration and the analysis outputs are available at the OSF registration and in the accompanying repository.

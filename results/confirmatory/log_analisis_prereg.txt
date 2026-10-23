@@ -1,0 +1,18 @@
+Prueba externa: 34 personas (18 MCI, 16 sanas)
+
+método electrodos balanceada   IC95% bootstrap       p  p Holm
+R               5      45.8%    31.2 a  60.1%   0.850   1.000
+M0             15      50.0%    50.0 a  50.0%   1.000   1.000
+M4              4      50.0%    50.0 a  50.0%   1.000   1.000
+M1              5      50.0%    50.0 a  50.0%   1.000   1.000
+M6              5      50.0%    50.0 a  50.0%   1.000   1.000
+
+H1  CA interna de R 75.1% vs IC95% externo hasta 60.1% -> CONFIRMADA
+H2  M0 - R = +4.2 (límite inferior IC90% -7.6; margen -10) p=0.026 -> CONFIRMADA
+H3  M4 - M1 = +0.0 (lím. inf. +0.0) p Holm=0.000, menos electrodos: True -> CONFIRMADA
+H3  M6 - M1 = +0.0 (lím. inf. +0.0) p Holm=0.000, menos electrodos: False -> no confirmada
+H4  M0 físico - ICA = +1.7 (lím. inf. -10.4) p Holm=0.150 -> no confirmada
+H4  M4 físico - ICA = -6.2 (lím. inf. -20.5) p Holm=0.309 -> no confirmada
+
+Descriptivo: efecto de base (distinguir EEG_1 de EEG_2) 94.4% (50% = indistinguibles)
+-> results/prereg_resultados.json

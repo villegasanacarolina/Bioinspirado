@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}\setmainlanguage{english}
+\setmainfont{TeX Gyre Termes}\setsansfont{TeX Gyre Heros}\setmonofont{TeX Gyre Cursor}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,booktabs,enumitem,xcolor,array}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{tikz}\usetikzlibrary{positioning,arrows.meta,fit,calc}
+\usepackage{microtype}
+\usepackage{lineno}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{authblk}
+\renewcommand\Affilfont{\small}
+\setlength{\parskip}{2pt}
+\linenumbers
+
+\title{\bfseries High internal accuracy, chance-level external performance: a preregistered external validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment}
+\author[1]{Jessica Milagros Cordero Rivera}
+\author[1,*]{Ana Carolina Torres Villegas}
+\author[1]{Salvador Miguel Hinojosa Cervantes}
+\affil[1]{Tecnológico de Monterrey, Campus Guadalajara, Zapopan, Jalisco, Mexico}
+\affil[*]{Corresponding author: \href{mailto:torresvillegasanacarolina@gmail.com}{torresvillegasanacarolina@gmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Background.} A recent study reported up to 95\% accuracy in detecting mild cognitive impairment (MCI) from resting-state EEG with 5--7 electrodes selected by a multi-objective genetic algorithm (NSGA-II), using leave-one-subject-out validation in 24 people. Selection and evaluation used the same people, and no external test was performed.
+\textbf{Methods.} We reconstructed the method independently and used the original public dataset (EEG\_1) only for development, where we quantified segment leakage, selection bias and ocular contamination. We froze the replication and four alternatives (ICA-cleaned relative band power with shrinkage LDA, without selection, with one electrode per scalp zone, with NSGA-II and with a penalised binary particle swarm), preregistered hypotheses, decision rules and code fingerprints on OSF, and tested every method once on an independent public dataset from the same centre and equipment (EEG\_2; 18 MCI, 16 controls). A secondary analysis used a physical montage processed channel by channel.
+\textbf{Results.} In development, mixing segments of the same person raised accuracy from 50--57\% to 90--99\%, and NSGA-II reached 72--79\% with shuffled labels. Externally, the replication's internal accuracy of 75.1\% fell to a balanced accuracy of 45.8\% (95\% CI 31.2--60.1), supporting our first hypothesis. No method performed above chance ($p_\text{Holm}=1.00$); the four alternatives predicted MCI for all 34 people, so their formal non-inferiority was trivial. The two datasets were 94.4\% distinguishable from EEG features alone: EEG\_2 was dominated by delta activity (69\% against 40\% of 1--30\,Hz power), and mains interference was associated with the diagnosis in opposite directions in the two datasets. External AUCs were 0.40--0.52, and per-dataset standardisation revealed no residual signal. The physical-montage comparison was inconclusive.
+\textbf{Conclusions.} The reported accuracies did not transfer to new people. Dataset shift and acquisition confounders outweighed any MCI-related signal. Electrode minimisation should follow, not precede, person-level, nested and preregistered external validation.\\[4pt]
+\noindent\textbf{Keywords:} mild cognitive impairment; EEG; channel selection; NSGA-II; external validation; preregistration; replication; dataset shift.
+\end{abstract}
+
+\begin{figure}[t]
+\centering\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[every node/.style={font=\scriptsize, align=center},
+  box/.style={draw, rounded corners=2pt, minimum height=13mm, text width=27mm, fill=#1}, box/.default=gray!8,
+  arr/.style={-{Stealth[length=2mm]}, thick}]
+\node[box=blue!8]   (d1)  at (0,0)     {\textbf{EEG\_1}\\24 people\\(11 MCI, 13 controls)};
+\node[box]          (dev) at (3.6,0)   {\textbf{Development}\\replication\\+ diagnostic controls};
+\node[box]          (frz) at (7.2,0)   {\textbf{Freeze}\\R, M0, M4, M1, M6\\+ physical montage};
+\node[box=orange!12](reg) at (10.8,0)  {\textbf{Preregistration}\\hypotheses, rules,\\SHA-256 of code and data};
+\node[box=blue!8]   (d2)  at (14.4,0)  {\textbf{EEG\_2}\\34 people\\(18 MCI, 16 controls)};
+\node[box=orange!12, text width=52mm] (tst) at (12.6,-2.4) {\textbf{Single external test}\\fit on EEG\_1, predict EEG\_2 once;\\script applies the registered rules};
+\draw[arr] (d1) -- (dev); \draw[arr] (dev) -- (frz); \draw[arr] (frz) -- (reg);
+\draw[arr] (reg.south) -- (reg.south |- tst.north); \draw[arr] (d2.south) -- (d2.south |- tst.north);
+\draw[dashed, gray] (12.6,1.0) -- (12.6,-0.9); \node[font=\tiny, text=gray] at (12.6,1.25) {no access before registration};
+\end{tikzpicture}}
+\caption{\textbf{Study design.} EEG\_1 was used for everything that involves choices; EEG\_2 was used once, after the preregistration, by frozen code.}
+\label{fig:design}
+\end{figure}
+
+\input{intro_methods}
+\input{results_discussion}
+
+\section*{Preregistration}
+Hypotheses, decision rules, code and test-feature fingerprints were registered on OSF before the external test: \url{https://osf.io/4enh8}. Deviations: none in the confirmatory analysis. The per-dataset standardisation in the exploratory analyses was added after seeing the results and is labelled post hoc.
+
+\section*{Data availability}
+Both datasets are publicly available from Isfahan University of Medical Sciences at \url{https://misp.mui.ac.ir/en/eeg-data} \citep{kashefpoor2016,kashefpoor2019}. The extracted feature files can be regenerated bit for bit with the released code; their SHA-256 fingerprints are listed in the preregistration.
+
+\section*{Code availability}
+The full code (replication, frozen methods, physical montage, decision rules, exploratory analyses and figures) is available in the OSF registration and in the accompanying public repository.
+
+\section*{Ethics statement}
+This is a secondary analysis of de-identified, publicly available data. The original studies obtained ethical approval and informed consent as reported in their publications \citep{kashefpoor2016,kashefpoor2019}.
+
+\section*{Author contributions}
+\textbf{J.M.C.R.}: conceptualisation, methodology, software, investigation, formal analysis, writing -- original draft. \textbf{A.C.T.V.}: conceptualisation, methodology, software, validation, formal analysis, visualisation, writing -- original draft, writing -- review and editing. \textbf{S.M.H.C.}: supervision, writing -- review and editing. All authors approved the final manuscript.
+
+\section*{Funding}
+This research received no specific funding.
+
+\section*{Competing interests}
+The authors declare no competing interests.
+
+\bibliographystyle{unsrtnat}
+\bibliography{../shared/refs}
+
+\end{document}

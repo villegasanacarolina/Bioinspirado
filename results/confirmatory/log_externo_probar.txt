@@ -1,0 +1,20 @@
+Entrenamiento: 24 personas (11 MCI) | Prueba: 34 personas (18 MCI)
+Los métodos se fijaron ANTES de ver la base de prueba. La prueba se usa una sola vez.
+
+[Réplica del paper] CA interna que reportaría el paper (LOSO en entrenamiento): 75.1% con ['T3', 'Cz', 'T4', 'Pz', 'P4']
+R  réplica del paper               personas bien 15/34  exactitud  44.1% (IC95% 27.2-62.1)  balanceada  45.8% (p=0.850)  sens  16.7  espec  75.0  CA interna 75.1% | CA por segmento en prueba 45.6% | ['T3', 'Cz', 'T4', 'Pz', 'P4']
+M0 sin selección (15 electrodos)   personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  
+M4 zonas exhaustivo                personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T3', 'C3', 'O1']
+M1 NSGA-II regla del paper (semilla 0) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'T5', 'Pz', 'T6']
+M1 NSGA-II regla del paper (semilla 1) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'T5', 'Pz', 'T6']
+M1 NSGA-II regla del paper (semilla 2) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'T5', 'Pz', 'T6']
+M1 NSGA-II regla del paper (semilla 3) personas bien 17/34  exactitud  50.0% (IC95% 32.4-67.6)  balanceada  47.2% (p=1.000)  sens  94.4  espec   0.0  ['F4', 'C3', 'Cz', 'T5']
+M1 NSGA-II regla del paper (semilla 4) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'T5', 'Pz', 'T6']
+M6 PSO binario parsimonioso (semilla 0) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['Fz', 'F4', 'T4', 'Pz', 'T6']
+M6 PSO binario parsimonioso (semilla 1) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F3', 'C3', 'T4', 'Pz', 'T6']
+M6 PSO binario parsimonioso (semilla 2) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'C3', 'T4', 'Pz', 'T6']
+M6 PSO binario parsimonioso (semilla 3) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'T5', 'Pz', 'T6']
+M6 PSO binario parsimonioso (semilla 4) personas bien 18/34  exactitud  52.9% (IC95% 35.1-70.2)  balanceada  50.0% (p=1.000)  sens 100.0  espec   0.0  ['F4', 'T4', 'P4', 'T6']
+
+[Efecto de base] Exactitud balanceada para distinguir EEG de entrenamiento vs prueba: 94.4% (50% = indistinguibles)
+-> results/prueba_externa.json

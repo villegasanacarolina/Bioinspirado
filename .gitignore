@@ -1,0 +1,33 @@
+# Datos de EEG (no se redistribuyen; ver README, sección "Data / Datos")
+data/
+*.edf
+*.EDF
+states.xlsx
+States.xlsx
+
+# Características extraídas (se regeneran bit a bit con el código)
+mci_nsga2/externo/
+*.npz
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# LaTeX (archivos temporales)
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.xdv
+*.bbl
+*.blg
+*.synctex.gz
+*.toc
+
+# Sistema
+.DS_Store
+Thumbs.db

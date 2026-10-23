@@ -1,0 +1,16 @@
+{
+  "title": "External validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment (code and results)",
+  "upload_type": "software",
+  "description": "Code, results and manuscript sources for a preregistered replication and external validation of NSGA-II electrode selection for EEG-based detection of mild cognitive impairment (Aljalal et al., 2024). Preregistration: https://osf.io/4enh8",
+  "creators": [
+    {"name": "Cordero Rivera, Jessica Milagros", "affiliation": "Tecnológico de Monterrey, Campus Guadalajara"},
+    {"name": "Torres Villegas, Ana Carolina", "affiliation": "Tecnológico de Monterrey, Campus Guadalajara"},
+    {"name": "Hinojosa Cervantes, Salvador Miguel", "affiliation": "Tecnológico de Monterrey, Campus Guadalajara"}
+  ],
+  "license": "MIT",
+  "keywords": ["EEG", "mild cognitive impairment", "NSGA-II", "channel selection", "external validation", "preregistration", "replication"],
+  "related_identifiers": [
+    {"identifier": "https://osf.io/4enh8", "relation": "isSupplementTo", "scheme": "url"},
+    {"identifier": "10.1038/s41598-024-63180-y", "relation": "references", "scheme": "doi"}
+  ]
+}

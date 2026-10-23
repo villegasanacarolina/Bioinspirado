@@ -1,0 +1,94 @@
+\section{Introducción}
+
+El deterioro cognitivo leve (MCI, por sus siglas en inglés) es una disminución de la cognición mayor a la esperada para la edad que todavía no compromete la independencia, y con frecuencia precede a la demencia \citep{petersen2004}. El electroencefalograma (EEG) en reposo es atractivo para el tamizaje porque es barato, no invasivo y portátil, y porque el MCI y la enfermedad de Alzheimer se asocian con un enlentecimiento de los ritmos de reposo, en particular con menor potencia alfa posterior \citep{babiloni2015,cassani2018}. Un dispositivo de tamizaje sería más práctico con pocos electrodos, por lo que varios estudios buscan el montaje más pequeño que conserve la exactitud diagnóstica.
+
+\citet{aljalal2024} abordaron esta pregunta con un algoritmo genético multiobjetivo (NSGA-II; \citealp{deb2002}) que busca los electrodos y las características que maximizan la exactitud con validación \emph{leave-one-subject-out} (LOSO) mientras minimizan el número de electrodos. Con una base pública de 24 personas de Isfahan \citep{kashefpoor2016} reportaron 89.7\,\% de exactitud con los 19 electrodos, hasta 94.9\,\% con 7 electrodos y hasta 95.8\,\% al seleccionar también características. Los electrodos elegidos con más frecuencia fueron Cz, F8, T4 y Fp1. El código no se publicó.
+
+Tres problemas bien documentados pueden inflar estas cifras. Primero, cuando segmentos de una misma persona quedan a la vez en entrenamiento y prueba, el clasificador puede reconocer a la persona en lugar de la condición \citep{saeb2017}. Segundo, cuando la misma estimación de validación cruzada se usa para elegir un modelo (aquí, el subconjunto de electrodos) y para reportar su desempeño, el valor reportado tiene un sesgo optimista que crece con el número de modelos candidatos \citep{varma2006,cawley2010}. NSGA-II evalúa miles de subconjuntos, así que este sesgo de selección puede ser grande. Tercero, con unas pocas decenas de personas el error de muestreo de cualquier exactitud es amplio, de alrededor de $\pm 15$ puntos porcentuales \citep{varoquaux2018}, de modo que el azar produce mejoras aparentes con facilidad. Un cuarto problema, propio del área, concierne a los electrodos frontales: Fp1, Fp2, F7 y F8 registran movimientos oculares, que pueden diferir entre grupos y actuar como variable de confusión. Por último, los electrodos elegidos después de una referencia promedio y un análisis de componentes independientes (ICA) calculados con los 19 canales son \emph{virtuales}: su señal contiene información de los demás electrodos y un dispositivo con solo esos electrodos no podría reproducirla.
+
+La única forma de saber si un montaje seleccionado generaliza es probarlo una vez en personas que nunca se usaron para construirlo ni elegirlo \citep{collins2024}. Por eso (i) reconstruimos de forma independiente en Python el método de \citet{aljalal2024}; (ii) usamos la base original (EEG\_1) solo para desarrollo, donde cuantificamos los problemas anteriores con controles diagnósticos; (iii) congelamos la réplica y cuatro alternativas diseñadas para atenderlos; (iv) preregistramos hipótesis, reglas de decisión y huellas del código \citep{nosek2018,osfprereg}; y (v) hicimos una única prueba externa en una base pública independiente del mismo centro y equipo (EEG\_2; \citealp{kashefpoor2019}). Un análisis secundario, también preregistrado, evaluó si las conclusiones se sostienen con un montaje físico, en el que cada electrodo se procesa por separado.
+
+\section{Materiales y métodos}
+
+\subsection{Bases de datos}
+
+Ambas bases son registros públicos de EEG en reposo de la Universidad de Ciencias Médicas de Isfahan, adquiridos con el mismo sistema (19 electrodos del sistema 10--20, 256\,Hz, unos 30 minutos por registro) y distribuidos por el mismo grupo \citep{kashefpoor2016,kashefpoor2019}. La Tabla~\ref{tab:data} las resume. Según la fuente, el MCI se diagnosticó con una entrevista neuropsiquiátrica basada en los criterios de Petersen, con puntajes del Mini-Mental State Examination (MMSE) de 21 a 26 para MCI y mayores de 26 para controles; los participantes tenían de 60 a 77 años y se habían sometido a una angiografía coronaria en el año previo. EEG\_2 se publicó como extensión de la misma base; no pudimos verificar que sus criterios de inclusión sean idénticos. Los estudios originales obtuvieron aprobación ética y consentimiento informado según se reporta en sus publicaciones; el presente trabajo es un análisis secundario de datos públicos anonimizados.
+
+\begin{table}[t]
+\centering\small
+\caption{\textbf{Bases de datos.} Ambas provienen del mismo centro y sistema de registro. Las etiquetas se leyeron del archivo \texttt{states.xlsx} de cada base.}
+\label{tab:data}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & EEG\_1 (desarrollo) & EEG\_2 (prueba externa) \\
+\midrule
+Personas disponibles & 27 (11 MCI, 16 controles) & 34 (18 MCI, 16 controles) \\
+Personas usadas & 24 (11 MCI, 13 controles)\textsuperscript{a} & 34 (sin exclusiones) \\
+Duración del registro & unos 30 min & 27.3--37.9 min \\
+Segmentos por persona & 60 $\times$ 10\,s (primeros 10 min) & 60 $\times$ 10\,s (primeros 10 min) \\
+Función & solo desarrollo y selección & prueba única y bloqueada \\
+Referencia & \citet{kashefpoor2016} & \citet{kashefpoor2019} \\
+\bottomrule
+\end{tabular}
+
+\smallskip\footnotesize\raggedright \textsuperscript{a}\,\citet{aljalal2024} excluyeron a tres controles sin identificarlos; nosotros excluimos a los tres controles con más segmentos de 10\,s por encima de 100\,\textmu V (HC\_12, HC\_17, HC\_24). El análisis con las 27 personas se reporta como exploratorio.
+\end{table}
+
+Antes de la prueba externa verificamos que ningún registro de EEG\_2 duplicara uno de EEG\_1: ningún archivo es idéntico (MD5) y la correlación máxima entre cualquier fragmento de 30\,s de EEG\_2 y cualquier registro de EEG\_1 fue de 0.74, frente a 1.00 de una copia. Los 34 registros de EEG\_2 tienen los 19 canales a 256\,Hz y duran más de 10 minutos.
+
+\subsection{Réplica independiente del método original}
+
+Reconstruimos el procedimiento de \citet{aljalal2024} a partir de su sección de métodos (Fig.~\ref{fig:design}). Los primeros 10 minutos de cada registro se filtraron con un pasa-banda de 0.5--64\,Hz, se re-referenciaron al promedio común, se les aplicó un filtro notch en 50 y 100\,Hz y se dividieron en 60 segmentos de 10\,s. Cada segmento se descompuso con una transformada wavelet discreta de cinco niveles (Daubechies-4, sin el detalle D1; \citealp{mallat1989}) o con descomposición variacional de modos, y en cada sub-banda y canal se calcularon diez medidas (entre ellas la entropía de umbral, ThEn, y la energía de Teager, TeEng). Cuatro clasificadores (\emph{k} vecinos más cercanos, máquina de vectores de soporte, análisis discriminante y bosque aleatorio) se evaluaron con LOSO, promediando la exactitud de los segmentos de cada persona como en el artículo original. NSGA-II usó un cromosoma binario sobre los 19 canales más genes enteros para los hiperparámetros del clasificador, con los dos objetivos del artículo: menos canales y mayor exactitud LOSO. Para la selección de canales, la población y las generaciones fueron 200 y 50. Las decisiones que el artículo original no especifica (familia wavelet, umbral de ThEn de 2\,\textmu V, operadores genéticos, estandarización dentro de cada pliegue, qué controles excluir) están documentadas en el código. La réplica corrida en dos computadoras distintas dio resultados idénticos en las 80 combinaciones de medida, descomposición y clasificador.
+
+\subsection{Controles diagnósticos en los datos de desarrollo}
+
+Solo con EEG\_1 cuantificamos los problemas descritos en la Introducción: (i) validación cruzada de 10 particiones por registro, que mezcla segmentos de la misma persona, frente a LOSO por persona; (ii) NSGA-II con etiquetas diagnósticas revueltas, que muestra la exactitud que alcanza la búsqueda sin ninguna señal real \citep{ojala2010}; (iii) LOSO anidado, en el que NSGA-II elige electrodos con 23 personas y el modelo elegido se prueba en la 24.ª, 24 veces \citep{varma2006}; y (iv) el contenido ocular de cada electrodo, estimado como la fracción de su varianza explicada por los componentes de ICA más correlacionados con electrooculogramas vertical y horizontal derivados de los canales frontales \citep{jung2000}.
+
+\subsection{Métodos comparados en la prueba externa}
+
+Cinco métodos quedaron congelados en el código antes del preregistro (Tabla~\ref{tab:methods}). R es la réplica de \citet{aljalal2024} en su mejor configuración reportada para selección de canales (DWT, ThEn, análisis discriminante), con la regla del artículo de quedarse con la solución de mayor exactitud interna. M0, M4, M1 y M6 comparten una representación más limpia diseñada para atender los problemas: (a) eliminación por ICA de los dos componentes más correlacionados con los movimientos oculares vertical y horizontal, exclusión de Fp1, Fp2, F7 y F8 y recálculo de la referencia promedio; (b) características que la literatura asocia con el MCI, el logaritmo de la potencia relativa en las bandas delta (1--4\,Hz), theta (4--8\,Hz), alfa (8--13\,Hz) y beta (13--30\,Hz), calculada con el método de Welch \citep{welch1967} en cada segmento de 10\,s y promediada por persona, para que la unidad de análisis sea la persona y no el segmento; y (c) un clasificador regularizado, el análisis discriminante lineal (LDA) con contracción de Ledoit--Wolf \citep{ledoit2004}. M0 usa los 15 electrodos restantes sin selección. M4 restringe la búsqueda a un electrodo por zona del cuero cabelludo (frontal, central, temporal y parieto-occipital; 180 combinaciones evaluadas exhaustivamente), un espacio de búsqueda mucho menor que deja menos oportunidades de ajustar ruido. M1 aplica NSGA-II con la regla del artículo a las mismas características. M6 usa optimización por enjambre de partículas binaria \citep{kennedy1997} con una penalización explícita de un punto porcentual por electrodo, para comprobar que las conclusiones no dependen del algoritmo de búsqueda \citep{wolpert1997}. En M1 y M6 la predicción de cada persona es el voto de mayoría de cinco semillas. Toda la selección dentro de M4, M1 y M6 usa un \emph{leave-one-out} interno sobre las personas de entrenamiento.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{\textbf{Métodos congelados antes de la prueba externa.} Todos se ajustan y eligen sus electrodos solo con EEG\_1. LDA: análisis discriminante lineal; LOO: \emph{leave-one-out}.}
+\label{tab:methods}
+\begin{tabular}{@{}p{1.7cm}p{3.6cm}p{3.1cm}p{5.4cm}@{}}
+\toprule
+Método & Señal & Características & Selección de electrodos y decisión \\
+\midrule
+R & 19 canales, referencia promedio & ThEn de DWT por segmento & NSGA-II (200$\times$50, semilla 0), mayor exactitud LOSO interna; etiqueta de la persona = mayoría de sus segmentos \\
+M0 & Limpia con ICA, 15 canales\textsuperscript{a} & Log de potencia relativa por banda, promedio por persona & Ninguna (15 electrodos); LDA con contracción \\
+M4 & Como M0 & Como M0 & Un electrodo por zona, búsqueda exhaustiva (180), exactitud balanceada LOO interna \\
+M1 & Como M0 & Como M0 & NSGA-II (40$\times$25) con la regla del artículo; voto de 5 semillas \\
+M6 & Como M0 & Como M0 & PSO binario (20 partículas, 25 iteraciones), aptitud = exactitud balanceada interna $-$ 1 punto por electrodo; voto de 5 semillas \\
+M0 y M4 físicos & 15 canales, solo filtrado por canal (sin referencia promedio ni ICA) & Como M0 & Como M0 y M4 \\
+\bottomrule
+\end{tabular}
+
+\smallskip\raggedright \textsuperscript{a}\,Fp1, Fp2, F7 y F8 se eliminan después de la ICA; se recalcula la referencia promedio.
+\end{table}
+
+\paragraph{Montaje físico.} En M0 y M4 las características de cada electrodo se calculan después de una referencia promedio y una ICA estimadas con los 19 canales. Para probar si el ahorro de electrodos se sostiene con electrodos reales, M0-físico y M4-físico repiten M0 y M4 solo con operaciones de un canal (filtros pasa-banda y notch), conservando la referencia original del registro. Este análisis se agregó después de congelar los métodos principales y se preregistró como secundario.
+
+\subsection{Preregistro y prueba externa}
+
+Las hipótesis, las reglas de decisión, el código (huella SHA-256 de cada archivo) y los archivos de características extraídas de EEG\_2 (también fijados por SHA-256; la extracción es determinista y los reproduce bit a bit) se registraron en OSF antes de entrenar o evaluar cualquier modelo con EEG\_2 \citep{osfprereg}. Después se corrió la prueba externa una sola vez: cada método se ajustó con EEG\_1 y predijo a cada persona de EEG\_2, y un script aplicó las reglas de decisión preregistradas a las predicciones guardadas.
+
+La medida principal fue la exactitud balanceada por persona en las 34 personas de EEG\_2, es decir, el promedio de sensibilidad y especificidad. La pregunta de investigación (PI) fue qué métodos superan el azar; se fijaron las predicciones de cada método y se permutaron las etiquetas de prueba 10\,000 veces, con corrección de Holm sobre los cinco métodos \citep{holm1979}. Se registraron cuatro hipótesis:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \textbf{H1.} R muestra alta exactitud interna pero mucho menor exactitud externa. Se confirma si la exactitud LOSO interna de R (la cifra que reportaría el artículo original) queda por encima del límite superior del intervalo de confianza (IC) bootstrap del 95\,\% de su exactitud balanceada externa.
+\item \textbf{H2.} M0 no es inferior a R.
+\item \textbf{H3.} M4 y M6 no son inferiores a M1 y usan menos electrodos (mediana entre semillas).
+\item \textbf{H4 (secundaria).} M0-físico no es inferior a M0 con ICA. Como M4-físico cayó a 36.7\,\% en desarrollo (Sección~\ref{sec:dev}), no se hizo predicción para él.
+\end{itemize}
+La no inferioridad \citep{walker2011} usó un margen de $-10$ puntos porcentuales de exactitud balanceada, la menor pérdida que consideramos relevante para un tamizaje y aproximadamente la ganancia que dio la limpieza de artefactos en desarrollo. Se evaluó con un bootstrap pareado de personas estratificado por clase (10\,000 remuestreos; \citealp{efron1993}); se concluyó no inferioridad si menos del 5\,\% de las diferencias remuestreadas quedaban en $-10$ o por debajo, es decir, si el límite inferior del IC bilateral del 90\,\% quedaba por encima de $-10$. Se aplicó corrección de Holm a las dos comparaciones de H3 y, por separado, a las de H4. Para la exactitud simple se reportan intervalos exactos de Clopper--Pearson \citep{clopper1934}. Con 18 MCI y 16 controles, un método necesita al menos 62\,\% de exactitud balanceada para superar el azar; la potencia para detectar exactitudes balanceadas reales de 60, 70 y 80\,\% es 0.40, 0.84 y 0.99 (simulación). Un IC que contiene a la vez $-10$ y 0 se reporta como no concluyente.
+
+Como control descriptivo del cambio de dominio, un LDA con contracción y \emph{leave-one-out} intentó distinguir, solo con las características de 15 electrodos, de qué base provenía cada una de las 58 personas (\emph{efecto de base}).
+
+\subsection{Análisis exploratorios}
+
+Los siguientes análisis se declararon exploratorios en el preregistro: (i) la prueba externa de M0 y M4 entrenados con las 27 personas de EEG\_1; (ii) el área bajo la curva ROC (AUC), estimada con \emph{leave-pair-out} en EEG\_1 \citep{airola2011} y externamente en los métodos con puntaje continuo; (iii) la interferencia de la red eléctrica, medida como el logaritmo del cociente entre la potencia en 49--51\,Hz y la potencia en 1--45\,Hz de los registros originales, y la actividad lenta frontal (potencia en 0.5--4\,Hz en Fp1, Fp2, F7 y F8), ambas comparadas entre grupos y entre bases; (iv) un control positivo: la dirección de la diferencia entre grupos en la potencia alfa relativa posterior (P3, Pz, P4, O1, O2), que se espera menor en MCI \citep{babiloni2015}; y (v) la estabilidad de los electrodos elegidos por M1 y M6 entre semillas.
+
+\subsection{Software y reproducibilidad}
+
+Todos los análisis se corrieron en Python con MNE-Python \citep{gramfort2013}, scikit-learn \citep{pedregosa2011}, NumPy y SciPy. NSGA-II y el PSO binario se implementaron a partir de sus descripciones originales. Todos los pasos aleatorios usan semillas fijas. El código, el preregistro y los resultados están disponibles en el registro de OSF y en el repositorio que acompaña al artículo.

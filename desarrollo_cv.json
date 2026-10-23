@@ -1,0 +1,32 @@
+{
+ "DWT-ThEn-LDA": {
+  "loso_ca": 53.47222222222222,
+  "loso_bal_persona": 48.95104895104895,
+  "kfold10_segmentos": 96.04166666666669
+ },
+ "DWT-ThEn-KNN": {
+  "loso_ca": 56.59722222222222,
+  "loso_bal_persona": 51.39860139860139,
+  "kfold10_segmentos": 99.2361111111111
+ },
+ "DWT-TeEng-LDA": {
+  "loso_ca": 49.93055555555555,
+  "loso_bal_persona": 49.650349650349646,
+  "kfold10_segmentos": 95.34722222222221
+ },
+ "DWT-TeEng-KNN": {
+  "loso_ca": 55.625,
+  "loso_bal_persona": 52.79720279720279,
+  "kfold10_segmentos": 98.05555555555556
+ },
+ "DWT-STD-LDA": {
+  "loso_ca": 54.44444444444444,
+  "loso_bal_persona": 49.650349650349646,
+  "kfold10_segmentos": 89.79166666666669
+ },
+ "DWT-STD-KNN": {
+  "loso_ca": 55.55555555555556,
+  "loso_bal_persona": 55.94405594405594,
+  "kfold10_segmentos": 97.56944444444444
+ }
+}
